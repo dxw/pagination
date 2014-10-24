@@ -26,7 +26,7 @@ class Pagination {
     return '<li class="'.htmlspecialchars(implode(' ', $classes)).'"><a href="'.htmlspecialchars(call_user_func($this->url, $link)).'">'.htmlspecialchars($text).'</a></li>';
   }
 
-  function render() {
+  function getItems() {
     $prev = $this->current - 1;
     $prev_disabled = false;
     if ($prev < 1) {
@@ -41,13 +41,43 @@ class Pagination {
       $next_disabled = true;
     }
 
+    $items = [];
+
+    $items[] = [
+      'link' => $prev,
+      'text' => '«',
+      'arrow' => true,
+      'current' => false,
+      'disabled' => $prev_disabled,
+    ];
+
+    $items[] = [
+      'link' => $this->current,
+      'text' => (string)$this->current,
+      'arrow' => false,
+      'current' => true,
+      'disabled' => false,
+    ];
+
+    $items[] = [
+      'link' => $next,
+      'text' => '»',
+      'arrow' => true,
+      'current' => false,
+      'disabled' => $next_disabled,
+    ];
+
+    return $items;
+  }
+
+  function render() {
     $s = [];
+
     $s[] = '<ul class="pagination">'; // bootstrap + foundation use the same class here
-    $s[] = $this->item($prev, '«', true, false, $prev_disabled);
 
-    $s[] = $this->item($this->current, $this->current, false, true, false);
-
-    $s[] = $this->item($next, '»', true, false, $next_disabled);
+    foreach ($this->getItems() as $item) {
+      $s[] = $this->item($item['link'], $item['text'], $item['arrow'], $item['current'], $item['disabled']);
+    }
     $s[] = '</ul>';
 
     return implode('', $s);
