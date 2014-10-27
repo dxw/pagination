@@ -1,10 +1,17 @@
 <?php
 
+/**
+* $current = the current page we're on
+* $max = total number of pages
+* $context = number of pages to show before and after the current one (if the current page is less than the context then any unused context pages from before the current page are displayed after the current page - i.e. current=2, context=1: 1, _2_, 3 but current=1, context=1: _1_, 2, 3)
+* $extraContext = the first/last pages (before/after the ellipses)
+*/
 class Pagination {
-  function __construct($current, $max, $context, callable $url) {
+  function __construct($current, $max, $context, $extraContext, callable $url) {
     $this->current = $current;
     $this->max = $max;
     $this->context = $context;
+    $this->extraContext = $extraContext;
     $this->url = $url;
   }
 
@@ -51,6 +58,15 @@ class Pagination {
       'disabled' => $prev_disabled,
     ];
 
+    $afterContext = $this->context;
+    for ($i = $this->current - $this->context; $i < $this->current; $i++) {
+      if ($i < 1) {
+        $afterContext++;
+      } else {
+        //TODO
+      }
+    }
+
     $items[] = [
       'link' => $this->current,
       'text' => (string)$this->current,
@@ -58,6 +74,40 @@ class Pagination {
       'current' => true,
       'disabled' => false,
     ];
+
+    for ($i = $this->current+1; $i <= $this->current+$afterContext; $i++) {
+      if ($i <= $this->max) {
+        $items[] = [
+          'link' => $i,
+          'text' => (string)$i,
+          'arrow' => false,
+          'current' => true,
+          'disabled' => false,
+        ];
+      }
+    }
+
+    if ($this->current + $afterContext < $this->max) {
+      if ($this->current + $afterContext + $this->extraContext < $this->max) {
+        $items[] = [
+          'link' => null,
+          'text' => '…',
+          'arrow' => false,
+          'current' => false,
+          'disabled' => true,
+        ];
+      }
+
+      for ($i = $this->max + 1 - $this->extraContext; $i <= $this->max; $i++) {
+        $items[] = [
+          'link' => $i,
+          'text' => (string)$i,
+          'arrow' => false,
+          'current' => false,
+          'disabled' => false,
+        ];
+      }
+    }
 
     $items[] = [
       'link' => $next,
