@@ -50,6 +50,8 @@ class Pagination {
 
     $items = [];
 
+    // Arrow /////////////////////////////////////////////////////////////////
+
     $items[] = [
       'link' => $prev,
       'text' => '«',
@@ -58,14 +60,36 @@ class Pagination {
       'disabled' => $prev_disabled,
     ];
 
+    // Ellipsis //////////////////////////////////////////////////////////////
+
+    if ($this->current - $this->context > 1) {
+      $items[] = [
+        'link' => null,
+        'text' => '…',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+      ];
+    }
+
+    // Before context ////////////////////////////////////////////////////////
+
     $afterContext = $this->context;
     for ($i = $this->current - $this->context; $i < $this->current; $i++) {
       if ($i < 1) {
         $afterContext++;
       } else {
-        //TODO
+        $items[] = [
+          'link' => $i,
+          'text' => (string)$i,
+          'arrow' => false,
+          'current' => true,
+          'disabled' => false,
+        ];
       }
     }
+
+    // Current ///////////////////////////////////////////////////////////////
 
     $items[] = [
       'link' => $this->current,
@@ -74,6 +98,8 @@ class Pagination {
       'current' => true,
       'disabled' => false,
     ];
+
+    // After context /////////////////////////////////////////////////////////
 
     for ($i = $this->current+1; $i <= $this->current+$afterContext; $i++) {
       if ($i <= $this->max) {
@@ -87,6 +113,8 @@ class Pagination {
       }
     }
 
+    // Ellipsis //////////////////////////////////////////////////////////////
+
     if ($this->current + $afterContext < $this->max) {
       if ($this->current + $afterContext + $this->extraContext < $this->max) {
         $items[] = [
@@ -98,6 +126,8 @@ class Pagination {
         ];
       }
 
+    // After extra context ///////////////////////////////////////////////////
+
       for ($i = $this->max + 1 - $this->extraContext; $i <= $this->max; $i++) {
         $items[] = [
           'link' => $i,
@@ -108,6 +138,8 @@ class Pagination {
         ];
       }
     }
+
+    // Arrow /////////////////////////////////////////////////////////////////
 
     $items[] = [
       'link' => $next,
