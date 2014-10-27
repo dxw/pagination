@@ -44,7 +44,7 @@ class Pagination {
     $next = $this->current + 1;
     $next_disabled = false;
     if ($next > $this->max) {
-      $next = 1;
+      $next = $this->max;
       $next_disabled = true;
     }
 

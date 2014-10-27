@@ -7,9 +7,29 @@ class PaginotionTest extends PHPUnit_Framework_TestCase {
     return array_map(function ($b) { return $b['text']; }, $a);
   }
 
+  function getLink($a, $b, $c, $d) {
+    // function __construct($current, $max, $context, $extraContext)
+    $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
+    return array_map(function ($b) { return $b['link']; }, $a);
+  }
+
   function testOther() {
     $a = (new Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
     $this->assertContains('class="pagination"', $a);
+  }
+
+  function testLinks() {
+    $this->assertSame(['«', '1', '»'], $this->getText(1, 1, 0, 0));
+    $this->assertSame([ 1 ,  1 ,  1 ], $this->getLink(1, 1, 0, 0));
+
+    $this->assertSame(['«', '…', '42', '»'], $this->getText(42, 42, 0, 0));
+    $this->assertSame([41 ,null,  42 , 42 ], $this->getLink(42, 42, 0, 0));
+
+    $this->assertSame(['«', '1', '2', '3', '»'], $this->getText(1, 3, 1, 0));
+    $this->assertSame([ 1 ,  1 ,  2 ,  3 ,  2 ], $this->getLink(1, 3, 1, 0));
+
+    $this->assertSame(['«', '…', '37', '38', '39', '40', '41', '…', '»'], $this->getText(39, 42, 2, 0));
+    $this->assertSame([38 ,null,  37 ,  38 ,  39 ,  40 ,  41 ,null, 40 ], $this->getLink(39, 42, 2, 0));
   }
 
   function testBasic() {
