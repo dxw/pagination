@@ -15,22 +15,28 @@ class Pagination {
     $this->url = $url;
   }
 
-  function item($link, $text, $arrow, $current, $disabled) {
+  function renderItem($item) {
+    $classes = $this->getClasses($item);
+
+    return '<li class="'.htmlspecialchars(implode(' ', $classes)).'"><a href="'.htmlspecialchars(call_user_func($this->url, $item['link'])).'">'.htmlspecialchars($item['text']).'</a></li>';
+  }
+
+  function getClasses($item) {
     $classes = [];
-    if ($arrow) {
+    if ($item['arrow']) {
       // bootstrap uses no class, foundation uses arrow
       $classes[] = 'arrow';
     }
-    if ($current) {
+    if ($item['current']) {
       $classes[] = 'active'; // bootstrap
       $classes[] = 'current'; // foundation
     }
-    if ($disabled) {
+    if ($item['disabled']) {
       $classes[] = 'disabled'; // boostrap
       $classes[] = 'unavailable'; // foundation
     }
 
-    return '<li class="'.htmlspecialchars(implode(' ', $classes)).'"><a href="'.htmlspecialchars(call_user_func($this->url, $link)).'">'.htmlspecialchars($text).'</a></li>';
+    return $classes;
   }
 
   function getItems() {
@@ -162,7 +168,7 @@ class Pagination {
     $s[] = '<ul class="pagination">'; // bootstrap + foundation use the same class here
 
     foreach ($this->getItems() as $item) {
-      $s[] = $this->item($item['link'], $item['text'], $item['arrow'], $item['current'], $item['disabled']);
+      $s[] = $this->renderItem($item);
     }
     $s[] = '</ul>';
 

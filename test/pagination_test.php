@@ -1,6 +1,9 @@
 <?php
 
 class PaginationTest extends PHPUnit_Framework_TestCase {
+
+  // Helpers /////////////////////////////////////////////////////////////////
+
   function getText($a, $b, $c, $d) {
     // function __construct($current, $max, $context, $extraContext)
     $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
@@ -13,24 +16,14 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
     return array_map(function ($b) { return $b['link']; }, $a);
   }
 
-  function testRender() {
-    $a = (new Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
-    $this->assertContains('class="pagination"', $a);
+  function getClasses($item) {
+    $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }));
+    $classes = $a->getClasses($item);
+    sort($classes);
+    return $classes;
   }
 
-  function testLinks() {
-    $this->assertSame(['«', '1', '»'], $this->getText(1, 1, 0, 0));
-    $this->assertSame([ 1 ,  1 ,  1 ], $this->getLink(1, 1, 0, 0));
-
-    $this->assertSame(['«', '…', '42', '»'], $this->getText(42, 42, 0, 0));
-    $this->assertSame([41 ,null,  42 , 42 ], $this->getLink(42, 42, 0, 0));
-
-    $this->assertSame(['«', '1', '2', '3', '»'], $this->getText(1, 3, 1, 0));
-    $this->assertSame([ 1 ,  1 ,  2 ,  3 ,  2 ], $this->getLink(1, 3, 1, 0));
-
-    $this->assertSame(['«', '…', '37', '38', '39', '40', '41', '…', '»'], $this->getText(39, 42, 2, 0));
-    $this->assertSame([38 ,null,  37 ,  38 ,  39 ,  40 ,  41 ,null, 40 ], $this->getLink(39, 42, 2, 0));
-  }
+  // Test numbers ////////////////////////////////////////////////////////////
 
   function testBasic() {
     $this->assertSame(['«', '1', '»'], $this->getText(1, 1, 0, 0));
@@ -70,6 +63,64 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(['«', '1', '…', '38', '39', '40', '41', '42', '»'], $this->getText(40, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '37', '38', '39', '40', '41', '42', '»'], $this->getText(39, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '36', '37', '38', '39', '40', '…', '42', '»'], $this->getText(38, 42, 2, 1));
+  }
+
+  // Test other things ///////////////////////////////////////////////////////
+
+  function testLinks() {
+    $this->assertSame(['«', '1', '»'], $this->getText(1, 1, 0, 0));
+    $this->assertSame([ 1 ,  1 ,  1 ], $this->getLink(1, 1, 0, 0));
+
+    $this->assertSame(['«', '…', '42', '»'], $this->getText(42, 42, 0, 0));
+    $this->assertSame([41 ,null,  42 , 42 ], $this->getLink(42, 42, 0, 0));
+
+    $this->assertSame(['«', '1', '2', '3', '»'], $this->getText(1, 3, 1, 0));
+    $this->assertSame([ 1 ,  1 ,  2 ,  3 ,  2 ], $this->getLink(1, 3, 1, 0));
+
+    $this->assertSame(['«', '…', '37', '38', '39', '40', '41', '…', '»'], $this->getText(39, 42, 2, 0));
+    $this->assertSame([38 ,null,  37 ,  38 ,  39 ,  40 ,  41 ,null, 40 ], $this->getLink(39, 42, 2, 0));
+  }
+
+  function testClasses() {
+    $this->assertSame([], $this->getClasses([
+        'arrow' => false,
+        'current' => false,
+        'disabled' => false,
+    ]));
+
+    // Bootstrap
+
+    $this->assertContains('active', $this->getClasses([
+        'arrow' => false,
+        'current' => true,
+        'disabled' => false,
+    ]));
+
+    $this->assertContains('disabled', $this->getClasses([
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+    ]));
+
+    // Foundation
+
+    $this->assertContains('arrow', $this->getClasses([
+        'arrow' => true,
+        'current' => false,
+        'disabled' => false,
+    ]));
+
+    $this->assertContains('current', $this->getClasses([
+        'arrow' => false,
+        'current' => true,
+        'disabled' => false,
+    ]));
+
+    $this->assertContains('unavailable', $this->getClasses([
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+    ]));
   }
 
   function testEverything() {
@@ -140,4 +191,10 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
       ],
     ], $a);
   }
+
+  function testRender() {
+    $a = (new Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
+    $this->assertContains('class="pagination"', $a);
+  }
+
 }
