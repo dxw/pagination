@@ -13,7 +13,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
     return array_map(function ($b) { return $b['link']; }, $a);
   }
 
-  function testOther() {
+  function testRender() {
     $a = (new Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
     $this->assertContains('class="pagination"', $a);
   }
@@ -70,5 +70,74 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(['«', '1', '…', '38', '39', '40', '41', '42', '»'], $this->getText(40, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '37', '38', '39', '40', '41', '42', '»'], $this->getText(39, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '36', '37', '38', '39', '40', '…', '42', '»'], $this->getText(38, 42, 2, 1));
+  }
+
+  function testEverything() {
+    $a = (new Pagination(38, 42, 1, 1, function ($n) { return "http://abc/page/$n/"; }))->getItems();
+    $this->assertSame([
+      [
+        'link' => 37,
+        'text' => '«',
+        'arrow' => true,
+        'current' => false,
+        'disabled' => false,
+      ],
+      [
+        'link' => 1,
+        'text' => '1',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => false,
+      ],
+      [
+        'link' => null,
+        'text' => '…',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+      ],
+      [
+        'link' => 37,
+        'text' => '37',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => false,
+      ],
+      [
+        'link' => 38,
+        'text' => '38',
+        'arrow' => false,
+        'current' => true,
+        'disabled' => false,
+      ],
+      [
+        'link' => 39,
+        'text' => '39',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => false,
+      ],
+      [
+        'link' => null,
+        'text' => '…',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+      ],
+      [
+        'link' => 42,
+        'text' => '42',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => false,
+      ],
+      [
+        'link' => 39,
+        'text' => '»',
+        'arrow' => true,
+        'current' => false,
+        'disabled' => false,
+      ],
+    ], $a);
   }
 }
