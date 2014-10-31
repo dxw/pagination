@@ -79,6 +79,20 @@ class Pagination {
       'disabled' => $prev_disabled,
     ];
 
+    // Extra context /////////////////////////////////////////////////////////
+
+    if ($from > 1) {
+      for ($i = 1; $i <= $this->extraContext; $i++) {
+        $items[] = [
+          'link' => $i,
+          'text' => (string)$i,
+          'arrow' => false,
+          'current' => false,
+          'disabled' => false,
+        ];
+      }
+    }
+
     // Ellipsis //////////////////////////////////////////////////////////////
 
     if ($from > 1) {
@@ -105,7 +119,7 @@ class Pagination {
 
     // Ellipsis //////////////////////////////////////////////////////////////
 
-    if ($to < $this->max) {
+    if ($to + $this->extraContext < $this->max) {
       $items[] = [
         'link' => null,
         'text' => '…',
@@ -115,7 +129,7 @@ class Pagination {
       ];
     }
 
-    // After extra context ///////////////////////////////////////////////////
+    // Extra context /////////////////////////////////////////////////////////
 
     if ($to < $this->max) {
       for ($i = $this->max + 1 - $this->extraContext; $i <= $this->max; $i++) {
