@@ -46,7 +46,8 @@ class PaginotionTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(['«', '1', '2', '3', '…', '»'], $this->getText(1, 4, 1, 0));
 
     $this->assertSame(['«', '1', '2', '3', '…', '»'], $this->getText(2, 4, 1, 0));
-    $this->assertSame(['«', '…', '2', '3', '4', '…', '»'], $this->getText(3, 4, 1, 0));
+    $this->assertSame(['«', '…', '2', '3', '4', '»'], $this->getText(3, 4, 1, 0));
+    $this->assertSame(['«', '…', '2', '3', '4', '…', '»'], $this->getText(3, 5, 1, 0));
 
     $this->assertSame(['«', '…', '40', '41', '42', '»'], $this->getText(41, 42, 1, 0));
     $this->assertSame(['«', '…', '40', '41', '42', '»'], $this->getText(42, 42, 1, 0));
