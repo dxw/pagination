@@ -1,6 +1,6 @@
 <?php
 
-class PaginotionTest extends PHPUnit_Framework_TestCase {
+class PaginationTest extends PHPUnit_Framework_TestCase {
   function getText($a, $b, $c, $d) {
     // function __construct($current, $max, $context, $extraContext)
     $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
@@ -68,6 +68,7 @@ class PaginotionTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(['«', '1', '…', '38', '39', '40', '41', '42', '»'], $this->getText(42, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '38', '39', '40', '41', '42', '»'], $this->getText(41, 42, 2, 1));
     $this->assertSame(['«', '1', '…', '38', '39', '40', '41', '42', '»'], $this->getText(40, 42, 2, 1));
-    $this->assertSame(['«', '1', '…', '37', '38', '39', '40', '41', '…', '»'], $this->getText(39, 42, 2, 1));
+    $this->assertSame(['«', '1', '…', '37', '38', '39', '40', '41', '42', '»'], $this->getText(39, 42, 2, 1));
+    $this->assertSame(['«', '1', '…', '36', '37', '38', '39', '40', '…', '42', '»'], $this->getText(38, 42, 2, 1));
   }
 }
