@@ -50,6 +50,25 @@ class Pagination {
 
     $items = [];
 
+    // Set from/to ///////////////////////////////////////////////////////////
+
+    $from = $this->current - $this->context;
+    $to = $this->current + $this->context;
+
+    if ($from < 1) {
+      $to += (0 - $from) + 1;
+      $from = 1;
+    }
+
+    if ($to > $this->max) {
+      $from -= $to - $this->max;
+      if ($from < 1) {
+        $from = 1;
+      }
+
+      $to = $this->max;
+    }
+
     // Arrow /////////////////////////////////////////////////////////////////
 
     $items[] = [
@@ -62,7 +81,7 @@ class Pagination {
 
     // Ellipsis //////////////////////////////////////////////////////////////
 
-    if ($this->current - $this->context > 1) {
+    if ($from > 1) {
       $items[] = [
         'link' => null,
         'text' => '…',
@@ -72,62 +91,33 @@ class Pagination {
       ];
     }
 
-    // Before context ////////////////////////////////////////////////////////
+    // Context and current ///////////////////////////////////////////////////
 
-    $afterContext = $this->context;
-    for ($i = $this->current - $this->context; $i < $this->current; $i++) {
-      if ($i < 1) {
-        $afterContext++;
-      } else {
-        $items[] = [
-          'link' => $i,
-          'text' => (string)$i,
-          'arrow' => false,
-          'current' => true,
-          'disabled' => false,
-        ];
-      }
-    }
-
-    // Current ///////////////////////////////////////////////////////////////
-
-    $items[] = [
-      'link' => $this->current,
-      'text' => (string)$this->current,
-      'arrow' => false,
-      'current' => true,
-      'disabled' => false,
-    ];
-
-    // After context /////////////////////////////////////////////////////////
-
-    for ($i = $this->current+1; $i <= $this->current+$afterContext; $i++) {
-      if ($i <= $this->max) {
-        $items[] = [
-          'link' => $i,
-          'text' => (string)$i,
-          'arrow' => false,
-          'current' => true,
-          'disabled' => false,
-        ];
-      }
+    for ($i = $from; $i <= $to; $i++) {
+      $items[] = [
+        'link' => $i,
+        'text' => (string)$i,
+        'arrow' => false,
+        'current' => $i === $this->current,
+        'disabled' => false,
+      ];
     }
 
     // Ellipsis //////////////////////////////////////////////////////////////
 
-    if ($this->current + $afterContext < $this->max) {
-      if ($this->current + $afterContext + $this->extraContext < $this->max) {
-        $items[] = [
-          'link' => null,
-          'text' => '…',
-          'arrow' => false,
-          'current' => false,
-          'disabled' => true,
-        ];
-      }
+    if ($to < $this->max) {
+      $items[] = [
+        'link' => null,
+        'text' => '…',
+        'arrow' => false,
+        'current' => false,
+        'disabled' => true,
+      ];
+    }
 
     // After extra context ///////////////////////////////////////////////////
 
+    if ($to < $this->max) {
       for ($i = $this->max + 1 - $this->extraContext; $i <= $this->max; $i++) {
         $items[] = [
           'link' => $i,
