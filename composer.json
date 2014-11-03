@@ -13,8 +13,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Missing": "src/"
+        "psr-4": {
+            "Dxw\\": "src/"
         }
     }
 }

@@ -5,19 +5,18 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
   // Helpers /////////////////////////////////////////////////////////////////
 
   function getText($a, $b, $c, $d) {
-    // function __construct($current, $max, $context, $extraContext)
-    $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
+    $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
     return array_map(function ($b) { return $b['text']; }, $a);
   }
 
   function getLink($a, $b, $c, $d) {
     // function __construct($current, $max, $context, $extraContext)
-    $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
+    $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
     return array_map(function ($b) { return $b['link']; }, $a);
   }
 
   function getClasses($item) {
-    $a = (new Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }));
+    $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }));
     $classes = $a->getClasses($item);
     sort($classes);
     return $classes;
@@ -124,7 +123,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
   }
 
   function testEverything() {
-    $a = (new Pagination(38, 42, 1, 1, function ($n) { return "http://abc/page/$n/"; }))->getItems();
+    $a = (new \Dxw\Pagination(38, 42, 1, 1, function ($n) { return "http://abc/page/$n/"; }))->getItems();
     $this->assertSame([
       [
         'link' => 37,
@@ -193,8 +192,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
   }
 
   function testRender() {
-    $a = (new Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
+    $a = (new \Dxw\Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
     $this->assertContains('class="pagination"', $a);
   }
-
 }

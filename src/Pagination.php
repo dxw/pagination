@@ -1,5 +1,7 @@
 <?php
 
+namespace Dxw;
+
 /**
 * $current = the current page we're on
 * $max = total number of pages
