@@ -1,3 +1,5 @@
-image: thedxw/wordpress-test
+image: ubuntu
 script:
+  - apt-get update
+  - apt-get install -y phpunit
   - phpunit
