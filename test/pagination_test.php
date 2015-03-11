@@ -6,17 +6,17 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
 
   function getText($a, $b, $c, $d) {
     $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
-    return array_map(function ($b) { return $b['text']; }, $a);
+    return array_map(function ($b) use ($a) { return $b['text']; }, $a);
   }
 
   function getLink($a, $b, $c, $d) {
     // function __construct($current, $max, $context, $extraContext)
     $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }))->getItems();
-    return array_map(function ($b) { return $b['link']; }, $a);
+    return array_map(function ($b) use ($a) { return $b['link']; }, $a);
   }
 
   function getClasses($item) {
-    $a = (new \Dxw\Pagination($a, $b, $c, $d, function ($n) { return "http://abc/page/$n/"; }));
+    $a = (new \Dxw\Pagination(null, null, null, null, function ($n) { return "http://abc/page/$n/"; }));
     $classes = $a->getClasses($item);
     sort($classes);
     return $classes;
