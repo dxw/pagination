@@ -90,7 +90,6 @@ class Pagination {
       'text' => '«',
       'arrow' => true,
       'previous' => true,
-      'current' => false,
       'disabled' => $prev_disabled,
     ];
 
@@ -101,9 +100,6 @@ class Pagination {
         $items[] = [
           'link' => $i,
           'text' => (string)$i,
-          'arrow' => false,
-          'current' => false,
-          'disabled' => false,
         ];
       }
     }
@@ -114,8 +110,6 @@ class Pagination {
       $items[] = [
         'link' => null,
         'text' => '…',
-        'arrow' => false,
-        'current' => false,
         'disabled' => true,
       ];
     }
@@ -126,9 +120,7 @@ class Pagination {
       $items[] = [
         'link' => $i,
         'text' => (string)$i,
-        'arrow' => false,
         'current' => $i === $this->current,
-        'disabled' => false,
       ];
     }
 
@@ -138,8 +130,6 @@ class Pagination {
       $items[] = [
         'link' => null,
         'text' => '…',
-        'arrow' => false,
-        'current' => false,
         'disabled' => true,
       ];
     }
@@ -151,9 +141,6 @@ class Pagination {
         $items[] = [
           'link' => $i,
           'text' => (string)$i,
-          'arrow' => false,
-          'current' => false,
-          'disabled' => false,
         ];
       }
     }
@@ -165,7 +152,6 @@ class Pagination {
       'text' => '»',
       'arrow' => true,
       'next' => true,
-      'current' => false,
       'disabled' => $next_disabled,
     ];
 
