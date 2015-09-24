@@ -120,6 +120,14 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
         'current' => false,
         'disabled' => true,
     ]));
+
+    $this->assertContains('next', $this->getClasses([
+      'next' => true,
+    ]));
+
+    $this->assertContains('previous', $this->getClasses([
+      'previous' => true,
+    ]));
   }
 
   function testEverything() {
@@ -129,6 +137,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
         'link' => 37,
         'text' => '«',
         'arrow' => true,
+        'previous' => true,
         'current' => false,
         'disabled' => false,
       ],
@@ -185,6 +194,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
         'link' => 39,
         'text' => '»',
         'arrow' => true,
+        'next' => true,
         'current' => false,
         'disabled' => false,
       ],

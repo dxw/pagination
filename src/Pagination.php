@@ -25,17 +25,23 @@ class Pagination {
 
   function getClasses($item) {
     $classes = [];
-    if ($item['arrow']) {
+    if (isset($item['arrow']) && $item['arrow']) {
       // bootstrap uses no class, foundation uses arrow
       $classes[] = 'arrow';
     }
-    if ($item['current']) {
+    if (isset($item['current']) && $item['current']) {
       $classes[] = 'active'; // bootstrap
       $classes[] = 'current'; // foundation
     }
-    if ($item['disabled']) {
+    if (isset($item['disabled']) && $item['disabled']) {
       $classes[] = 'disabled'; // boostrap
       $classes[] = 'unavailable'; // foundation
+    }
+    if (isset($item['next']) && $item['next']) {
+      $classes[] = 'next'; // neither bootstrap nor foundation has next/previous classes
+    }
+    if (isset($item['previous']) && $item['previous']) {
+      $classes[] = 'previous'; // neither bootstrap nor foundation has next/previous classes
     }
 
     return $classes;
@@ -83,6 +89,7 @@ class Pagination {
       'link' => $prev,
       'text' => '«',
       'arrow' => true,
+      'previous' => true,
       'current' => false,
       'disabled' => $prev_disabled,
     ];
@@ -157,6 +164,7 @@ class Pagination {
       'link' => $next,
       'text' => '»',
       'arrow' => true,
+      'next' => true,
       'current' => false,
       'disabled' => $next_disabled,
     ];
