@@ -187,4 +187,12 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
     $a = (new \Dxw\Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
     $this->assertContains('class="pagination"', $a);
   }
+
+  function testConfiguration() {
+      $this->assertSame(['Older posts', 'dotdotdot', '2', 'Newer posts'], $this->getText(2, 2, 0, 0, [
+          'older' => 'Older posts',
+          'newer' => 'Newer posts',
+          'elipsis' => 'dotdotdot',
+      ]));
+  }
 }
