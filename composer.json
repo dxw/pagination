@@ -3,7 +3,6 @@
     "description": "Unit-tested framework-agnostic pagination that works with Bootstrap and Foundation",
     "homepage": "https://github.com/dxw/pagination",
     "type": "library",
-    "version": "0.1.0",
     "license": "MIT",
     "authors": [
         {
