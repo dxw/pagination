@@ -9,6 +9,12 @@ namespace Dxw;
 * $extraContext = the first/last pages (before/after the ellipses)
 */
 class Pagination {
+  public $current;
+  public $max;
+  public $context;
+  public $extraContext;
+  public $url;
+
   function __construct($current, $max, $context, $extraContext, callable $url) {
     $this->current = $current;
     $this->max = $max;

@@ -2,7 +2,7 @@
 
 ## Installation
 
-    composer require dxw/pagination=dev-master
+    composer require dxw/pagination
 
 ## Usage
 

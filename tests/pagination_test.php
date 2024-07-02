@@ -1,6 +1,6 @@
 <?php
 
-class PaginationTest extends PHPUnit_Framework_TestCase {
+class PaginationTest extends \PHPUnit\Framework\TestCase {
 
   // Helpers /////////////////////////////////////////////////////////////////
 
@@ -185,6 +185,6 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
 
   function testRender() {
     $a = (new \Dxw\Pagination(1, 1, 1, 0, function ($n) { return "http://abc/page/$n/"; }))->render();
-    $this->assertContains('class="pagination"', $a);
+    $this->assertStringContainsString('class="pagination"', $a);
   }
 }
